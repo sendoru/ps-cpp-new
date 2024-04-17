@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/mnt/d/problem_solving/build",
+  "command": "/usr/bin/c++   -I../  -g   -std=gnu++17 -o CMakeFiles/untitled.dir/source/boj/31629.cpp.o -c /mnt/d/problem_solving/source/boj/31629.cpp",
+  "file": "/mnt/d/problem_solving/source/boj/31629.cpp"
+}
+]
