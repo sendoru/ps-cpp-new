@@ -1,3 +1,0 @@
-/mnt/d/problem_solving/build/CMakeFiles/edit_cache.dir
-/mnt/d/problem_solving/build/CMakeFiles/rebuild_cache.dir
-/mnt/d/problem_solving/build/CMakeFiles/untitled.dir
