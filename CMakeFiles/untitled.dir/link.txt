@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/untitled.dir/source/boj/15511.cpp.o  -o untitled 

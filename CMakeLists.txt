@@ -2,10 +2,11 @@ cmake_minimum_required(VERSION 3.16)
 project(untitled)
 
 set(CMAKE_CXX_STANDARD 17)
+include_directories(${CMAKE_SOURCE_DIR}/actoder)
 
 add_executable(
-    untitled
-    ${CMAKE_SOURCE_DIR}/source/boj/15511.cpp
+    untitled.out
+    ${CMAKE_SOURCE_DIR}/source/atcoder/abc350_f.cpp
 )
 
-target_include_directories(untitled PUBLIC ${CMAKE_SOURCE_DIR})
+target_include_directories(untitled.out PUBLIC ${CMAKE_SOURCE_DIR})
