@@ -6,7 +6,7 @@ include_directories(${CMAKE_SOURCE_DIR}/actoder)
 
 add_executable(
     untitled.out
-    ${CMAKE_SOURCE_DIR}/source/codeforces/2031_e.cpp
+    ${CMAKE_SOURCE_DIR}/source/atcoder/arc187_b.cpp
 )
 
 target_include_directories(untitled.out PUBLIC ${CMAKE_SOURCE_DIR})
