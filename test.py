@@ -1,44 +1,15 @@
-actions = {
-    'S': 10,
-    'Q': 5,
-    'A': 7,
-    'L': -8,
-    'F': 4,
-    'D': -5,
-    'E': -10
-}
+import random as r
 
+arr_old = [[i + 1, i + 3, i + 2, i + 4] for i in range(0, 100000, 4)]
+# spread
+arr = []
+for i in range(0, 100000//4):
+    arr.append([arr_old[i][0], arr_old[i][1]])
+    arr.append([arr_old[i][2], arr_old[i][3]])
 
-def main():
-    n = int(input())
-    scores = {}
-    names = {}
-    for i in range(n):
-        tmp = input().split()
-        names[int(tmp[0]) - 1] = ' '.join(tmp[1:])
-        scores[int(tmp[0]) - 1] = 0
-    names = sorted(names.items())
-    names = dict(names)
-
-    m = int(input())
-    for i in range(m):
-        idx, action = input().split()
-        idx = int(idx) - 1
-        scores[idx] += actions[action]
-
-    scores = sorted(scores.items())
-    scores = dict(scores)
-
-    by_score = {}
-    for i in scores.keys():
-        if scores[i] not in by_score:
-            by_score[scores[i]] = []
-        by_score[scores[i]].append(names[i])
-
-    by_score = sorted(by_score.items(), reverse=True)
-    print(*([by_score[0][0]] + by_score[0][1]))
-    print(*([by_score[-1][0]] + by_score[-1][1]))
-
-
-if __name__ == '__main__':
-    main()
+r.shuffle(arr)
+arr = [' '.join(map(str, i)) for i in arr]
+arr = '\n'.join(arr)
+with open('test.txt', 'w') as f:
+    f.write("100000 50000\n")
+    f.write(arr)
