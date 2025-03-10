@@ -1,56 +1,32 @@
-// #include "atcoder/all"
-// #pragma GCC optimize("Ofast")
 #include <bits/stdc++.h>
-
 using namespace std;
-typedef long long ll;
-typedef long double ld;
-typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
-const ll MOD9 = 998244353;
-const ll MOD1 = (ll)1e9 + 7;
-
-bool cross(pii a, pii b) {
-    // assuming first < second
-    return (a.first < b.first && b.first < a.second && a.second < b.second) ||
-           (b.first < a.first && a.first < b.second && b.second < a.second);
-}
+using ll = long long;
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-
-    int n, m;
-    cin >> n >> m;
-    vector<pii> v(m);
-    for (int i = 0; i < m; i++) {
-        cin >> v[i].first >> v[i].second;
-        if (v[i].first > v[i].second) {
-            swap(v[i].first, v[i].second);
+    cin.tie(0)->sync_with_stdio(0);
+    ll n;
+    cin >> n;
+    vector<pair<ll, ll>> S;
+    int q, k = 0;
+    cin >> q;
+    while (q--) {
+        ll P, Q;
+        cin >> P >> Q;
+        if (P > Q)
+            swap(P, Q);
+        int z = 2;
+        for (auto [a, b] : S) {
+            if ((a < P && P < b) ^ (a < Q && Q < b))
+                z--;
+            if (a == P || b == P)
+                z = 0;
+            if (a == Q || b == Q)
+                z = 0;
         }
+        if (z > 0)
+            S.emplace_back(P, Q), k++;
+        else
+            break;
     }
-
-    vector<int> side(m, -1);
-    for (int i = 0; i < m; i++) {
-        bool possible = true;
-        int cur_side = 0;
-        for (int j = 0; j < i; j++) {
-            if (cur_side == side[j] && cross(v[i], v[j])) {
-                if (cur_side == 1) {
-                    possible = false;
-                    break;
-                } else {
-                    cur_side = 1;
-                }
-            }
-        }
-        if (!possible) {
-            cout << i << endl;
-            return 0;
-        }
-        side[i] = cur_side;
-    }
-    cout << m << endl;
-    return 0;
+    cout << k;
 }
