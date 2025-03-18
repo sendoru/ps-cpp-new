@@ -1,5 +1,8 @@
 // #include "atcoder/all"
 #include <bits/stdc++.h>
+#pragma GCC optimize("Ofast")
+#pragma GCC optimize("unroll-loops")
+#pragma GCC target("avx,avx2,fma")
 
 using namespace std;
 typedef long long ll;
@@ -14,8 +17,14 @@ int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    ll n, k;
-    cin >> n >> k;
+    int n, b;
+    cin >> n >> b;
+    vector<bool> is_black(n);
+    for (int i = 0; i < b; i++) {
+        int x;
+        cin >> x;
+        is_black[x - 1] = true;
+    }
     vector<vector<int>> adj_list(n);
     for (int i = 0; i < n - 1; i++) {
         int s, e;
@@ -41,54 +50,61 @@ int main() {
     };
     dfs(0);
 
-    // subgraph_cnt[i][j] = number of subgraphs with size j in the subtree rooted at i and including i
-    vector<vector<ll>> subgraph_cnt(n);
+    // dp[i][j] = {min, max} number of black nodes in a subgraph of size j rooted at i
+    vector<vector<pii>> dp(n);
     fill(visited.begin(), visited.end(), false);
 
     function<void(int)> dfs2 = [&](int node) {
         visited[node] = true;
-        subgraph_cnt[node] = {0, 0};
-        subgraph_cnt[node][1] = 1;
+        dp[node] = {{0, 0}};
+        if (is_black[node]) {
+            dp[node].push_back({1, 1});
+        } else {
+            dp[node].push_back({0, 0});
+        }
         for (int next : adj_list[node]) {
             if (visited[next]) {
                 continue;
             }
             dfs2(next);
-            vector<ll> tmp = subgraph_cnt[node];
+            vector<pii> tmp = dp[node];
             for (int i = 1; i <= subtree_size[next]; i++) {
-                for (int j = 1; j < subgraph_cnt[node].size(); j++) {
+                for (int j = 1; j < dp[node].size(); j++) {
                     if (i + j > subtree_size[node]) {
                         break;
                     }
                     while (tmp.size() <= i + j) {
-                        tmp.push_back(0);
+                        tmp.push_back({n, 0});
                     }
-                    __int128_t aa = (__int128_t)tmp[i + j] + (__int128_t)subgraph_cnt[node][j] * subgraph_cnt[next][i];
-                    tmp[i + j] = (ll)min((__int128_t)1.5e18, (__int128_t)aa);
+                    tmp[i + j].first = min(tmp[i + j].first, dp[node][j].first + dp[next][i].first);
+                    tmp[i + j].second = max(tmp[i + j].second, dp[node][j].second + dp[next][i].second);
                 }
             }
-            subgraph_cnt[node] = tmp;
+            dp[node] = tmp;
         }
     };
     dfs2(0);
-    vector<ll> all_subgraph_cnt = subgraph_cnt[0];
-    for (int i = 1; i < subgraph_cnt.size(); i++) {
-        for (int j = 0; j < subgraph_cnt[i].size(); j++) {
-            all_subgraph_cnt[j] += subgraph_cnt[i][j];
-            all_subgraph_cnt[j] = min((ll)1.5e18, all_subgraph_cnt[j]);
+    vector<pii> all_subtrees = dp[0];
+    for (vector<pii> &subtree : dp) {
+        for (int i = 0; i < subtree.size(); i++) {
+            all_subtrees[i].first = min(all_subtrees[i].first, subtree[i].first);
+            all_subtrees[i].second = max(all_subtrees[i].second, subtree[i].second);
         }
     }
 
-    __int128_t cur = all_subgraph_cnt[0];
-    for (int i = 1; i < all_subgraph_cnt.size(); i++) {
-        cur += all_subgraph_cnt[i];
-        if (cur >= k) {
-            cout << i << '\n';
-            return 0;
+    int q;
+    cin >> q;
+    int ans = 0;
+    while (q--) {
+        int x, y;
+        cin >> x >> y;
+
+        if (all_subtrees[x].first <= y && y <= all_subtrees[x].second) {
+            ans++;
         }
     }
 
-    cout << -1 << '\n';
+    cout << ans << "\n";
 
     return 0;
 }
