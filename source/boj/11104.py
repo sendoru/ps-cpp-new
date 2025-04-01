@@ -1,0 +1,1 @@
+for _ in range(int(input())):a=input().split();print("OK" if a[0]==a[1] else "ERROR")
