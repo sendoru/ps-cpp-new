@@ -6,7 +6,7 @@ include_directories(${CMAKE_SOURCE_DIR}/actoder)
 
 add_executable(
     untitled.out
-    ${CMAKE_SOURCE_DIR}/source/atcoder/abc402_f.cpp
+    ${CMAKE_SOURCE_DIR}/source/atcoder/abc403_f.cpp
 )
 
 target_include_directories(untitled.out PUBLIC ${CMAKE_SOURCE_DIR})
