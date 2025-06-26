@@ -62,6 +62,7 @@ int main() {
     for (int i = 0; i < n; i++) {
         cin >> abc[i][0] >> abc[i][1] >> abc[i][2];
     }
+    sort(abc.begin(), abc.end());
 
     vector<vector<pii>> by_b(50001);
     for (int i = 0; i < n; i++) {
