@@ -10,52 +10,42 @@ const ll MOD9 = 998244353;
 const ll MOD1 = (ll)1e9 + 7;
 
 string ss[3];
-int dp[1647][1647][3];
+int dp[1647][1647][5][3];
 
-int solve(int l, int r, int q) {
+int solve(int l, int r, int c, int q) {
     if (l > r) {
-        return 0;
+        return c == 0 ? 0 : 1;
     }
-    if (dp[l][r][q] != -1) {
-        return dp[l][r][q];
+    if (dp[l][r][c][q] != -1) {
+        return dp[l][r][c][q];
     }
 
-    int &res = dp[l][r][q] = 1;
+    int &res = dp[l][r][c][q] = 0;
     string &cur_s = ss[q];
 
-    if (q == 2) {
-        res &= solve(l, r, 0);
-        if (res == 0) {
-            return res = 1;
+    if (c == 0) {
+        if (q == 2) {
+            res |= !solve(l, r, 0, 0);
+            res |= !solve(l, r, 0, 1);
         }
-        res &= solve(l, r, 1);
-        if (res == 0) {
-            return res = 1;
+        if (cur_s[l] != '?') {
+            res |= solve(l + 1, r, cur_s[l] - '0' + 1, q);
         }
+        if (cur_s[r] != '?') {
+            res |= solve(l, r - 1, cur_s[r] - '0' + 3, q);
+        }
+        return res;
     }
 
-    for (int i = l; i <= r; i++) {
-        if ((i == l && cur_s[i] != '?') || (cur_s[i] == cur_s[i - 1])) {
-            res &= solve(i + 1, r, q);
-        } else {
-            break;
-        }
-        if (res == 0) {
-            return res = 1;
-        }
+    res |= !solve(l, r, 0, q);
+
+    if (cur_s[l] != '?' && c == (cur_s[l] - '0' + 1)) {
+        res |= solve(l + 1, r, cur_s[l] - '0' + 1, q);
     }
-    for (int i = r; i >= l; i--) {
-        if ((i == r && cur_s[i] != '?') || (cur_s[i] == cur_s[i + 1])) {
-            res &= solve(l, i - 1, q);
-        } else {
-            break;
-        }
-        if (res == 0) {
-            return res = 1;
-        }
+    if (cur_s[r] != '?' && c == (cur_s[r] - '0' + 3)) {
+        res |= solve(l, r - 1, cur_s[r] - '0' + 3, q);
     }
 
-    res ^= 1;
     return res;
 }
 
@@ -64,7 +54,7 @@ int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    fill(&dp[0][0][0], &dp[0][0][0] + sizeof(dp) / sizeof(int), -1);
+    fill(&dp[0][0][0][0], &dp[0][0][0][0] + sizeof(dp) / sizeof(int), -1);
 
     string s;
     cin >> s;
@@ -82,13 +72,11 @@ int main() {
 
     for (int i = 0; i < q_pos.size(); i++) {
         int pos = q_pos[i];
-        for (int j = 0; j < 3; j++) {
-            ss[0][pos] = '0';
-            ss[1][pos] = '1';
-        }
+        ss[0][pos] = '0';
+        ss[1][pos] = '1';
     }
 
-    int ans = solve(0, s.size() - 1, 2 * (!q_pos.empty()));
+    int ans = solve(0, s.size() - 1, 0, 2 * (!q_pos.empty()));
     cout << ans;
 
     return 0;
