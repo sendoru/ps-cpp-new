@@ -1,4 +1,5 @@
 // #include "atcoder/all"
+#pragma GCC optimize("Ofast")
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -45,21 +46,21 @@ int main() {
 
     int n;
     cin >> n;
-    vector<array<int, 3>> edges;
-    vector<vector<int>> adj_mat(n, vector<int>(n));
+    vector<array<ll, 3>> edges;
+    vector<vector<ll>> adj_mat(n, vector<ll>(n));
     for (int i = 1; i <= n; i++) {
-        for (int j = i + 1; j <= n; j++) {
+        for (int j = 1; j <= n; j++) {
             int w;
             cin >> w;
-            edges.push_back({w, i - 1, j - 1});
+            if (i < j)
+                edges.push_back({w, i - 1, j - 1});
             adj_mat[i - 1][j - 1] = w;
-            adj_mat[j - 1][i - 1] = w;
         }
     }
 
     sort(edges.begin(), edges.end());
     Dsu dsu(n);
-    vector<vector<int>> adj_list(n);
+    vector<vector<ll>> adj_list(n);
     for (auto [w, u, v] : edges) {
         if (!dsu.same(u, v)) {
             dsu.unite(u, v);
@@ -68,29 +69,29 @@ int main() {
         }
     }
 
-    vector<vector<int>> adj_mat_recon(n, vector<int>(n, -1));
+    vector<vector<ll>> adj_mat_recon(n, vector<ll>(n, -1));
     for (int root = 0; root < n; root++) {
-        vector<int> &dist = adj_mat_recon[root];
+        vector<ll> &dist = adj_mat_recon[root];
         dist[root] = 0;
-        queue<int> q;
+        queue<ll> q;
         q.push(root);
         while (!q.empty()) {
-            int u = q.front();
+            ll u = q.front();
             q.pop();
-            for (int v : adj_list[u]) {
+            for (ll v : adj_list[u]) {
                 if (dist[v] == -1) {
                     dist[v] = dist[u] + adj_mat[u][v];
+                    if (dist[v] != adj_mat[root][v]) {
+                        cout << "No";
+                        return 0;
+                    }
                     q.push(v);
                 }
             }
         }
     }
 
-    if (adj_mat == adj_mat_recon) {
-        cout << "Yes";
-    } else {
-        cout << "No";
-    }
+    cout << "Yes";
 
     return 0;
 }
