@@ -12,11 +12,10 @@ const ll INF = 2e18;
 // from atcoder library
 template <class S, S (*op)(S, S), S (*e)()>
 struct segtree {
-public:
+  public:
     segtree() : segtree(0) {}
     explicit segtree(int n) : segtree(std::vector<S>(n, e())) {}
-    explicit segtree(const std::vector<S> &v) : _n(int(v.size()))
-    {
+    explicit segtree(const std::vector<S> &v) : _n(int(v.size())) {
         log = ceil(log2(_n));
         size = 1 << log;
         d = std::vector<S>(2 * size, e());
@@ -27,8 +26,7 @@ public:
         }
     }
 
-    void set(int p, S x)
-    {
+    void set(int p, S x) {
         assert(0 <= p && p < _n);
         p += size;
         d[p] = x;
@@ -36,14 +34,12 @@ public:
             update(p >> i);
     }
 
-    S get(int p) const
-    {
+    S get(int p) const {
         assert(0 <= p && p < _n);
         return d[p + size];
     }
 
-    S prod(int l, int r) const
-    {
+    S prod(int l, int r) const {
         assert(0 <= l && l <= r && r <= _n);
         S sml = e(), smr = e();
         l += size;
@@ -63,13 +59,11 @@ public:
     S all_prod() const { return d[1]; }
 
     template <bool (*f)(S)>
-    int max_right(int l) const
-    {
+    int max_right(int l) const {
         return max_right(l, [](S x) { return f(x); });
     }
     template <class F>
-    int max_right(int l, F f) const
-    {
+    int max_right(int l, F f) const {
         assert(0 <= l && l <= _n);
         assert(f(e()));
         if (l == _n)
@@ -96,13 +90,11 @@ public:
     }
 
     template <bool (*f)(S)>
-    int min_left(int r) const
-    {
+    int min_left(int r) const {
         return min_left(r, [](S x) { return f(x); });
     }
     template <class F>
-    int min_left(int r, F f) const
-    {
+    int min_left(int r, F f) const {
         assert(0 <= r && r <= _n);
         assert(f(e()));
         if (r == 0)
@@ -128,15 +120,14 @@ public:
         return 0;
     }
 
-private:
+  private:
     int _n, size, log;
     std::vector<S> d;
 
     void update(int k) { d[k] = op(d[2 * k], d[2 * k + 1]); }
 };
 
-array<ll, 4> maxSumId()
-{
+array<ll, 4> maxSumId() {
 
     return {0, 0, 0, 0};
 }
@@ -152,8 +143,7 @@ array<ll, 4> maxSumId()
 // [i][2]: 전체구간
 // [i][3]: 조건 상관없음
 
-array<ll, 4> maxSumOP(array<ll, 4> l, array<ll, 4> r)
-{
+array<ll, 4> maxSumOP(array<ll, 4> l, array<ll, 4> r) {
     array<ll, 4> ret;
     // 0: 왼쪽 끝
     // (l의 왼쪽 끝) or (l의 전체 + r의 왼쪽 끝)
@@ -171,8 +161,7 @@ array<ll, 4> maxSumOP(array<ll, 4> l, array<ll, 4> r)
     return ret;
 }
 
-int main(void)
-{
+int main(void) {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
@@ -205,8 +194,7 @@ int main(void)
     for (int i = 0; i < n; i++) {
         if (points[i][2] == 1) {
             points[i][2] = c1;
-        }
-        else {
+        } else {
             points[i][2] = -c2;
         }
     }

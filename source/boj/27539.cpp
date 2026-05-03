@@ -38,8 +38,7 @@ struct LCA {
             for (int v = 0; v < n; v++) {
                 if (parents[k][v] < 0) {
                     parents[k + 1][v] = -1;
-                }
-                else {
+                } else {
                     parents[k + 1][v] = parents[k][parents[k][v]];
                 }
             }
@@ -77,8 +76,8 @@ struct DSU {
     LCA dsu_lca;
     vector<int> parent;
     vector<int> max_elem;
-    vector<int> dp;
-    DSU (const vector<vector<int>> &adj_list)
+    vector<ll> dp;
+    DSU(const vector<vector<int>> &adj_list)
         : dsu_lca(adj_list) {
         int n = (int)adj_list.size();
         parent.resize(n);
@@ -96,7 +95,7 @@ struct DSU {
         return parent[u] = find(parent[u]);
     }
     bool same(int u, int v) {
-       return find(u) == find(v);
+        return find(u) == find(v);
     }
     void unite(int u, int v) {
         u = find(u);
@@ -108,7 +107,7 @@ struct DSU {
         if (max_elem[u] < max_elem[v]) {
             swap(u, v);
         }
-        int dist = dsu_lca.dist(max_elem[u], max_elem[v]);
+        ll dist = dsu_lca.dist(max_elem[u], max_elem[v]);
         dp[u] = max(dp[u], dp[v] + dist);
         parent[v] = u;
     }
@@ -121,7 +120,7 @@ int main() {
 
     int n;
     cin >> n;
-    vector<int> p(n);
+    vector<ll> p(n);
     for (int i = 0; i < n; i++) {
         cin >> p[i];
         p[i]--;
