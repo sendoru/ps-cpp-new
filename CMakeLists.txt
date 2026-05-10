@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(
     untitled.out
-    ${CMAKE_SOURCE_DIR}/source/atcoder/abc457_g.cpp
+    ${CMAKE_SOURCE_DIR}/source/atcoder/arc219_c.cpp
 )
 
 target_include_directories(untitled.out PUBLIC ${CMAKE_SOURCE_DIR})
