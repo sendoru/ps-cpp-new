@@ -111,6 +111,6 @@ int main() {
         frac_ans = min(frac_ans, cur_frac_ans);
     }
 
-    cout << ans + frac_ans;
+    cout << ans + frac_ans << endl;
     return 0;
 }

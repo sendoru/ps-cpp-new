@@ -38,7 +38,7 @@ int main() {
         ans += (t - till + k - 1) / k;
     }
 
-    cout << ans;
+    cout << ans << "\n";
 
     return 0;
 }
