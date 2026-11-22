@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_executable(
     untitled.out
-    ${CMAKE_SOURCE_DIR}/source/boj/33916.cpp
+    ${CMAKE_SOURCE_DIR}/source/boj/30025.cpp
 )
 
 target_include_directories(untitled.out PUBLIC ${CMAKE_SOURCE_DIR})
